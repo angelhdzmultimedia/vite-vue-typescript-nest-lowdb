@@ -15,10 +15,8 @@ export class UsersService {
   private db: Database<Data> = {} as Database<Data>;
 
   constructor() {
-    this.init();
+    this.db = createDB('users.json');
   }
-
-  async init() {}
 
   async create(createUserDto: CreateUserDto): Promise<User | undefined> {
     await this.db.load();
