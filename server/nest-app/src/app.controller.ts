@@ -3,10 +3,7 @@ import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly shutdownService: ShutdownService
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get()
   getIndex(): string {
@@ -15,7 +12,7 @@ export class AppController {
 
   @Get('shutdown')
   getShutdown() {
-    process.emit('shutdown');
+    process.kill(process.pid, 'SIGTERM');
     return 'Shutting down...';
   }
 }
