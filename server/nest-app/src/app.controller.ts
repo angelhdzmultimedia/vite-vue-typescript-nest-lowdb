@@ -10,12 +10,13 @@ export class AppController {
   ) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getIndex(): string {
+    return this.appService.getIndex();
   }
 
   @Get('shutdown')
-  shutdown() {
-    this.shutdownService.emit('shutdown')
+  getShutdown() {
+    this.shutdownService.emit('shutdown');
+    return 'Shutting down...';
   }
 }
