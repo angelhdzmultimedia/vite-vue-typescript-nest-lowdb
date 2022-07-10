@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { join } from 'path';
-import { Low, JSONFile } from 'lowdb';
+import * as lowdb from 'lowdb';
 import { User } from './entities/user.entity';
 
 type Data = {
@@ -11,17 +11,16 @@ type Data = {
 
 @Injectable()
 export class UsersService {
-  private db: any;
+  private db: lowdb.Low;
 
   constructor() {
     this.init();
   }
 
   async init() {
-    /* const { Low, JSONFile } = await import('lowdb');
-    const file = join(process.cwd(), 'db.json');
-    const adapter = new JSONFile<Data>(file);
-    this.db = new Low(adapter);
+    /* const file = join(process.cwd(), 'db.json');
+    const adapter = new lowdb.JSONFile<Data>(file);
+    this.db = new lowdb.Low(adapter);
 
     await this.db.read();
     this.db.data ||= { users: [] }; */
