@@ -12,7 +12,7 @@ type Data = {
 
 @Injectable()
 export class UsersService {
-  private db: Database<Data>;
+  private db: Database<Data> = {} as Database<Data>;
 
   constructor() {
     this.init();
