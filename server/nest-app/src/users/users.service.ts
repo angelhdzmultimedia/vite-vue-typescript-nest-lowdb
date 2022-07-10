@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { join } from 'path';
+import { createDB, Database } from '../db';
 
 import { User } from './entities/user.entity';
 
@@ -11,35 +12,24 @@ type Data = {
 
 @Injectable()
 export class UsersService {
-  private db: any;
+  private db: Database<Data>;
 
   constructor() {
     this.init();
   }
 
-  async init() {
-    const lowdb = await import('lowdb');
-    const file = join(process.cwd(), 'db.json');
-    const adapter = new lowdb.JSONFile<Data>(file);
-    this.db = new lowdb.Low(adapter);
-    console.log(this.db);
-    await this.db.read();
-    this.db.data ||= { users: [] };
-  }
+  async init() {}
 
   async create(createUserDto: CreateUserDto): Promise<User | undefined> {
-    /* await this.db.read();
-    const { users } = this.db.data!;
-    users.push(createUserDto);
-    return users.at(-1); */
-    return {} as User;
+    await this.db.load();
+    this.db.data.users.push(createUserDto);
+    this.db.save();
+    return this.db.data.users.at(-1);
   }
 
   async findAll(): Promise<User[]> {
-    /*  await this.db.read();
-    const { users } = this.db.data!;
-    return users; */
-    return [];
+    await this.db.load();
+    return this.db.data.users;
   }
 
   findOne(id: number) {
