@@ -1,15 +1,19 @@
+import { writeFile, readFile } from 'fs/promises';
+import { existsSync } from 'fs';
+import { join } from 'path';
+
 export class Model<T> {
   private path?: string;
 
   constructor(name: string, private schema: Schema<T>) {
     this.path = `${name}s`.toLowerCase();
-    if (!existsSync(this.path)) {
-      writeFile(this.path, JSON.stringify([]));
+    if (!existsSync(join(process.cwd(), this.path))) {
+      writeFile(join(process.cwd(), this.path), JSON.stringify([]));
     }
   }
 
   private save(payload: T): Promise<void> {
-    writeFile(this.path, JSON.stringify(payload));
+    writeFile(join(process.cwd(), this.path), JSON.stringify(payload));
   }
 
   public async find(options: any): Promise<T[]> {
@@ -23,9 +27,9 @@ export class Model<T> {
     this.save(data);
   }
 
-  private load(): Promise<T[]> {
-    const body: string = readFile(this.path);
-    return JSON.parse(body) as T[];
+  private async load(): Promise<T[]> {
+    const body: Buffer = await readFile(join(process.cwd(), this.path));
+    return JSON.parse(body.toString()) as T[];
   }
 }
 
