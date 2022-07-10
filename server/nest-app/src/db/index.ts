@@ -1,12 +1,13 @@
 import { readFile, writeFile } from 'fs/promises';
 import { existsSync } from 'fs';
+import { join } from 'path';
 
 export class Database<T extends any> {
   public data: T = {} as T;
 
   constructor(private path: string) {
     if (!existsSync(path)) {
-      writeFile(path, JSON.stringify(this.data));
+      writeFile(join(process.cwd(), this.path), JSON.stringify(this.data));
     }
   }
 
