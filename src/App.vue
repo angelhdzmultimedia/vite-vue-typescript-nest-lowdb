@@ -11,14 +11,17 @@ const registerData = ref({
 
 onMounted(async () => {
   reset();
+  fetchUsers();
+});
+
+async function fetchUsers() {
   try {
-   
-    const {data} = await api.get('/users');
-    users.value = data
+    const { data } = await api.get('/users');
+    users.value = data;
   } catch (error) {
     alert(error);
   }
-});
+}
 
 function reset() {
   registerData.value = {
@@ -31,20 +34,22 @@ function reset() {
 async function createUser() {
   await api.post('/users', registerData.value);
   reset();
+  fetchUsers();
 }
 </script>
 
 <template>
-  <h4>Users</h4>
-  <ul>
-    <li v-for="user in users" class="row" :key="user.name">
-    <button>Name:{{user.name}}</button>
-     <button>Email:{{user.email}}</button>
-      
-    </li>
-  </ul>
+  <div class="column items-center">
+    <h4>Users</h4>
+    <div class="column users-list">
+      <div v-for="user in users" class="row" :key="user.name">
+        <button>Name:{{ user.name }}</button>
+        <button>Email:{{ user.email }}</button>
+      </div>
+    </div>
+  </div>
 
-  <form @submit.prevent="createUser" class="column create-user">
+  <form @submit.prevent="createUser" class="column create-user items-center">
     <h4>Create User</h4>
     <input v-model="registerData.name" placeholder="Name" />
     <input v-model="registerData.email" placeholder="Email" />
@@ -53,18 +58,4 @@ async function createUser() {
   </form>
 </template>
 
-<style>
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-}
-
-.create-user {
-  gap: 10px;
-}
-</style>
+<style></style>
