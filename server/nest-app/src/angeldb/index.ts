@@ -1,5 +1,5 @@
 import { writeFile, readFile } from 'fs/promises';
-import { existsSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 export class Model<T> {
@@ -7,6 +7,9 @@ export class Model<T> {
 
   constructor(name: string, private schema: Schema<T>) {
     this.path = `collections/${name}s.json`.toLowerCase();
+    if (!existsSync(join(process.cwd(), 'collections'))) {
+      mkdirSync(join(process.cwd(), 'collections'));
+    }
     if (!existsSync(join(process.cwd(), this.path))) {
       writeFile(join(process.cwd(), this.path), JSON.stringify([]));
     }
