@@ -1,5 +1,5 @@
 import { User } from '../users/entities/user.entity';
-
+import { createModel } from '../angeldb';
 const UserSchema = {
   name: {
     type: String,

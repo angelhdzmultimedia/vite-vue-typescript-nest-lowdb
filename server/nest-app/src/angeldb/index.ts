@@ -16,7 +16,7 @@ export class Model<T> {
     await writeFile(join(process.cwd(), this.path), JSON.stringify(data));
   }
 
-  public async find(options: any): Promise<T[]> {
+  public async find(options: any = {}): Promise<T[]> {
     const data: T[] = await this.load();
     return data;
   }
