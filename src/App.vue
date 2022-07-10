@@ -35,7 +35,11 @@ async function createUser() {
 <template>
   <h4>Users</h4>
   <ul>
-    <li v-for="user in users" class="row"></li>
+    <li v-for="user in users" class="row" :key="user.name">
+    <button>Name:{{user.name}}</button>
+     <button>Email:{{user.email}}</button>
+      
+    </li>
   </ul>
 
   <form @submit.prevent="createUser" class="column create-user">
