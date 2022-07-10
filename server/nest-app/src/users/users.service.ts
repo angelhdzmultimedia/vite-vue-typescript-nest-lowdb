@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { join } from 'path';
-import { createDB, Database } from '../db';
+import { UserModel } from '../angeldb';
 
 import { User } from './entities/user.entity';
 
@@ -12,29 +12,16 @@ type Data = {
 
 @Injectable()
 export class UsersService {
-  private db: Database<Data> = {} as Database<Data>;
-
-  constructor() {
-    this.db = createDB('users.json');
-    this.init();
-  }
-
-  async init() {
-    await this.db.load();
-    this.db.data.users ??= [];
-    this.db.save();
-  }
+  constructor() {}
 
   async create(createUserDto: CreateUserDto): Promise<User | undefined> {
-    await this.db.load();
-    this.db.data.users.push(createUserDto);
-    this.db.save();
-    return this.db.data.users.at(-1);
+    const user: User = await UserModel.create(createUserDto);
+    return user;
   }
 
   async findAll(): Promise<User[]> {
-    await this.db.load();
-    return this.db.data.users;
+    const users: User[] = await UserModel.find();
+    return users;
   }
 
   findOne(id: number) {

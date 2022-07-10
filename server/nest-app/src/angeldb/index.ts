@@ -3,17 +3,17 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 
 export class Model<T> {
-  private path?: string;
+  private path: string;
 
   constructor(name: string, private schema: Schema<T>) {
-    this.path = `${name}s`.toLowerCase();
+    this.path = `${name}s.json`.toLowerCase();
     if (!existsSync(join(process.cwd(), this.path))) {
       writeFile(join(process.cwd(), this.path), JSON.stringify([]));
     }
   }
 
-  private save(payload: T): Promise<void> {
-    writeFile(join(process.cwd(), this.path), JSON.stringify(payload));
+  private async save(data: T[]): Promise<void> {
+    await writeFile(join(process.cwd(), this.path), JSON.stringify(data));
   }
 
   public async find(options: any): Promise<T[]> {
@@ -21,10 +21,11 @@ export class Model<T> {
     return data;
   }
 
-  public async create(payload: T) {
+  public async create(payload: T): Promise<T> {
     const data: T[] = await this.load();
     data.push(payload);
     this.save(data);
+    return payload;
   }
 
   private async load(): Promise<T[]> {
@@ -39,7 +40,7 @@ class SchemaOptions<T> {
 }
 
 export type Schema<T> = {
-  [key: keyof T]: SchemaOptions<T>;
+  [key: string]: SchemaOptions<T>;
 };
 
 export function createModel<T>(name: string, schema: Schema<T>): Model<T> {
