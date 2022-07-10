@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npm run server:start && vite",
+    "dev": "concurrently \"npm run server:start\" \"vite\"",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "server:start": "cd server/nest-app && npm install && npm run start:dev",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "concurrently": "^7.2.2",
     "vue": "^3.2.37"
   },
   "devDependencies": {
