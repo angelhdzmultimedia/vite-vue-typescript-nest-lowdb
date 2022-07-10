@@ -6,7 +6,7 @@ export class Model<T> {
   private path: string;
 
   constructor(name: string, private schema: Schema<T>) {
-    this.path = `${name}s.json`.toLowerCase();
+    this.path = `collections/${name}s.json`.toLowerCase();
     if (!existsSync(join(process.cwd(), this.path))) {
       writeFile(join(process.cwd(), this.path), JSON.stringify([]));
     }
