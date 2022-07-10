@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ShutdownService } from './shutdown/shutdown.service';
 
 @Controller()
 export class AppController {
@@ -16,7 +15,7 @@ export class AppController {
 
   @Get('shutdown')
   getShutdown() {
-    this.shutdownService.emit('shutdown');
+    process.emit('shutdown');
     return 'Shutting down...';
   }
 }
