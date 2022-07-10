@@ -12,11 +12,11 @@ export class Database<T extends any> {
   }
 
   public async save(): Promise<void> {
-    await writeFile(this.path, JSON.stringify(this.data));
+    await writeFile(join(process.cwd(), this.path), JSON.stringify(this.data));
   }
 
   public async load(): Promise<void> {
-    const body: Buffer = await readFile(this.path);
+    const body: Buffer = await readFile(join(process.cwd(), this.path));
     this.data = JSON.parse(body.toString()) as T;
   }
 }
