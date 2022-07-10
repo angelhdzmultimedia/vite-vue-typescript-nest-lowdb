@@ -12,7 +12,9 @@ const registerData = ref({
 onMounted(async () => {
   reset();
   try {
-    users.value = await api.get('/users');
+   
+    const {data} = await api.get('/users');
+    users.value = data
   } catch (error) {
     alert(error);
   }
