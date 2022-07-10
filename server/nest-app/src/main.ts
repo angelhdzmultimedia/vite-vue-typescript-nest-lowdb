@@ -10,7 +10,7 @@ async function bootstrap() {
   process.on('SIGTERM', async () => {
     await app.close();
     console.log('NestJS Server stopped listening in port 5000.');
+    console.log('Node application stopped.');
   });
 }
 bootstrap();
-console.log('Node application stopped.');
