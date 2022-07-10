@@ -6,7 +6,7 @@ export class Database<T extends any> {
   public data: T = {} as T;
 
   constructor(private path: string) {
-    if (!existsSync(path)) {
+    if (!existsSync(this.path)) {
       writeFile(join(process.cwd(), this.path), JSON.stringify(this.data));
     }
   }
