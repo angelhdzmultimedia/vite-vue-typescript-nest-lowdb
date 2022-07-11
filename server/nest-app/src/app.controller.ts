@@ -12,7 +12,7 @@ export class AppController {
 
   @Get('shutdown')
   getShutdown() {
-    process.kill(process.pid, 'SIGTERM');
+    process.emit('disconnect');
     return 'Shutting down...';
   }
 }

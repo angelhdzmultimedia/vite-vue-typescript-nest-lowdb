@@ -7,10 +7,11 @@ async function bootstrap() {
   app.enableShutdownHooks();
   await app.listen(5000);
   console.log('NestJS Server listening in port 5000...');
-  process.on('SIGTERM', async () => {
+  process.on('disconnect', async () => {
     await app.close();
     console.log('NestJS Server stopped listening in port 5000.');
     console.log('Node application stopped.');
+    process.exit(0);
   });
 }
 bootstrap();
