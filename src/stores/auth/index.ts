@@ -26,7 +26,7 @@ export const useAuthStore = defineStore('authStore', () => {
       isPasswordHidden: true,
     },
     login: {
-      email: 'angelhdzmultimedia',
+      email: 'angelhdzmultimedia@gmail.com',
       password: '123456',
       isPasswordHidden: true,
     },
@@ -38,7 +38,10 @@ export const useAuthStore = defineStore('authStore', () => {
         email: formData.value.login.email,
         password: formData.value.login.password,
       });
-
+      currentUser.value = {
+        ...data,
+        isLoggedIn: true,
+      };
       Notify.create('Logged in successfully. Redirecting...');
       router.push('/');
     } catch (error: unknown) {
