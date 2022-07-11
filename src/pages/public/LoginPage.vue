@@ -2,10 +2,8 @@
   <MainLayout>
     <template #page>
       <q-page class="column items-center full-width">
-        
- <h4>Login</h4>
+        <h4>Login</h4>
         <q-form @submit.prevent="login" class="column q-gutter-sm">
-         
           <q-input filled v-model="formData.login.email" placeholder="Email" />
           <q-input
             filled
@@ -24,8 +22,8 @@
 </template>
 
 <script lang="ts" setup>
-import MainLayout from '../components/MainLayout.vue';
-import { useAuthStore } from '../stores/auth';
+import MainLayout from '../../components/MainLayout.vue';
+import { useAuthStore } from '../../stores/auth';
 
 const { currentUser, formData, login } = useAuthStore();
 </script>
