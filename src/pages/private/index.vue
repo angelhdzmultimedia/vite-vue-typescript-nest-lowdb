@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-import MainLayout from '../components/MainLayout.vue';
-import { useAuthStore } from '../stores/auth';
+import MainLayout from '../../components/MainLayout.vue';
+import { useAuthStore } from '../../stores/auth';
 import { computed } from 'vue';
 
 const { currentUser } = useAuthStore();
