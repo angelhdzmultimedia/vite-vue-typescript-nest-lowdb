@@ -37,7 +37,7 @@
         </q-btn>
       </q-toolbar>
     </q-header>
-    <q-page-container class="column full-width full-height q-pa-md">
+    <q-page-container class="column window-width window-height q-pa-md">
       <slot name="page" />
     </q-page-container>
   </q-layout>
