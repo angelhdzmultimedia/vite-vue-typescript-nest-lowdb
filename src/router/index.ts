@@ -22,7 +22,7 @@ function generateRoutes(pages, access) {
 
     routes.push({
       path: pathName,
-      component: import(/* @vite-ignore */ pages[page]),
+      component: pages[page],
       meta: {
         auth: access === 'private',
       },
