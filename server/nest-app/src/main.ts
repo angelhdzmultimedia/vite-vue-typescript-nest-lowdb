@@ -11,7 +11,7 @@ async function bootstrap() {
     await app.close();
     console.log('NestJS Server stopped listening in port 5000.');
     console.log('Node application stopped.');
-    process.exit(0);
+    process.exit();
   });
 }
 bootstrap();

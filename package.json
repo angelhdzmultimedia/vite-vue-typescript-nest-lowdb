@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npm install && npm run server:start && npm run client:start",
+    "dev": "npm install && concurrently \"npm run client:start\" \"npm run server:start\"",
     "client:start": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",

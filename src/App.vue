@@ -39,9 +39,16 @@ async function createUser() {
 </script>
 
 <template>
+  <form
+    method="GET"
+    action="https://vitejs-vite-4cehy5-y8ymt4st--5000.local.webcontainer.io/shutdown"
+  >
+    <button type="submit">Stop Server</button>
+  </form>
   <div class="column items-center">
     <h4>Users</h4>
-    <div class="column users-list">
+    <span v-if="!users.length">No users.</span>
+    <div v-else class="column users-list">
       <div v-for="user in users" class="row" :key="user.name">
         <button>Name:{{ user.name }}</button>
         <button>Email:{{ user.email }}</button>
