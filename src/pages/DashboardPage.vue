@@ -1,14 +1,17 @@
 <template>
-  <q-page> Welcome, {{ currentUser.displayName }}! </q-page>
+  <MainLayout>
+    <template #page>
+      <q-page class="">{{ welcome }}</q-page>
+    </template>
+  </MainLayout>
 </template>
 
 <script lang="ts" setup>
-import { mapStores } from 'pinia';
+import MainLayout from '../components/MainLayout.vue';
 import { useAuthStore } from '../stores/auth';
 import { computed } from 'vue';
 
-const authStore = useAuthStore();
-const { currentUser } = mapStores(authStore);
+const { currentUser } = useAuthStore();
 const welcome = computed(() => {
   return `Welcome, ${
     currentUser.isLoggedIn ? currentUser.displayName : 'Guest'

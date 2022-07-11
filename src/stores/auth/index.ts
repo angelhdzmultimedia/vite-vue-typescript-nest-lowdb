@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { api } from '../../api';
 import { Notify } from 'quasar';
+import { router } from '../../router';
 
 export const useAuthStore = defineStore('authStore', () => {
   const currentUser = ref({
@@ -25,25 +26,38 @@ export const useAuthStore = defineStore('authStore', () => {
       isPasswordHidden: true,
     },
     login: {
-      email: '',
-      password: '',
+      email: 'angelhdzmultimedia',
+      password: '123456',
       isPasswordHidden: true,
     },
   });
 
   async function login() {
     try {
-      const { data } = await api.post('/login');
+      const { data } = await api.post('/login', {
+        email: formData.value.login.email,
+        password: formData.value.login.password,
+      });
+
+      Notify.create('Logged in successfully. Redirecting...');
+      router.push('/');
     } catch (error: unknown) {
-      Notify.create(error);
+      Notify.create(error as string);
     }
   }
 
   async function register() {
     try {
-      const { data } = await api.post('/register');
+      const { data } = await api.post('/register', {
+        firstName: formData.value.register.firstName,
+        displayName: formData.value.register.displayName,
+        email: formData.value.register.email,
+        password: formData.value.register.password,
+      });
+      Notify.create('Registered successfully. Redirecting...');
+      router.push('/');
     } catch (error: unknown) {
-      Notify.create(error);
+      Notify.create(error as string);
     }
   }
 

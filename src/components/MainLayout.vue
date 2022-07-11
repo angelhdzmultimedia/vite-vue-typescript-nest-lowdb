@@ -13,7 +13,7 @@
         <q-toolbar-title>My App</q-toolbar-title>
       </q-toolbar>
     </q-header>
-    <q-page-container class="column full-width full-height q-ma-md">
+    <q-page-container class="column full-width full-height q-pa-md">
       <slot name="page" />
     </q-page-container>
   </q-layout>
