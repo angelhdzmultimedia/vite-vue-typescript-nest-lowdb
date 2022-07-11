@@ -2,22 +2,8 @@
   font-family: sans-serif;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-}
-
 .create-user {
   gap: 10px;
-}
-
-.items-center {
-  align-items: center;
 }
 
 .users-list {
