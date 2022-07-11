@@ -4,7 +4,7 @@ import { useAuthStore } from '../stores/auth';
 function generateRoutes(pages, access) {
   let routes = [];
   for (const page in pages) {
-    const token = /^(.*[\\/])?(.*?)(\.[^.]*?|)$/gi.exec(page);
+    const parts = /^(.*[\\/])?(.*?)(\.[^.]*?|)$/gi.exec(page);
     const data = {
       path: parts[0] || '',
       subpath: parts[1] || '',
