@@ -94,14 +94,15 @@ export class Model<T> {
 }
 
 function exclude(obj: any, props: any[]) {
-  let newObj: typeof obj = {};
-  for (const prop in Object.keys(obj)) {
-    if (!props.indexOf(prop)) {
+  const newObj: any = {};
+  for (const prop of Object.keys(obj)) {
+    if (props.indexOf(prop) === -1) {
       newObj[prop] = obj[prop];
     }
   }
   return newObj;
 }
+
 
 export class AuthUser {
   firstName?: string;
