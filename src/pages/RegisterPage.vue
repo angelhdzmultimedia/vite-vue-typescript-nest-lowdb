@@ -41,6 +41,10 @@
       </q-input>
 
       <q-btn color="primary" type="submit">Register</q-btn>
+      <div class="column items-center q-mt-lg q-gutter-md">
+       Already registered?
+       <q-btn @click="$router.push('/login')">Login</q-btn>
+      </div>
     </q-form>
   </q-page>
 </template>

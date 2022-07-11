@@ -133,6 +133,9 @@ export class Auth {
   private path: string = `db/auth/auth.json`;
 
   constructor() {
+    if (!existsSync(join(process.cwd(), 'db'))) {
+      mkdirSync(join(process.cwd(), 'db'));
+    }
     if (!existsSync(join(process.cwd(), 'db/auth'))) {
       mkdirSync(join(process.cwd(), 'db/auth'));
     }
