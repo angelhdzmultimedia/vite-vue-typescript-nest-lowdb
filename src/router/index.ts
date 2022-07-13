@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 
 function _generateRoutes(root: RouteRootRecord): RouteRecordRaw[] {
   let routes = [];
   for (const page in root.path) {
-    const parts = /^(.*[\\/])?(.*?)(\.[^.]*?|)$/gi.exec(page);
+    const parts = /^(.*[\\/])?(.*?)(\.[^.]*?|)$/gi.exec(page)!;
     const data = {
       path: parts[0] || '',
       subpath: parts[1] || '',
@@ -39,7 +39,7 @@ type RouteRootRecord = {
 };
 
 function generateRoutes(roots: RouteRootRecord[]): RouteRecordRaw[] {
-  let routes = [];
+  let routes: RouteRecordRaw[] = [];
   for (const root of roots) {
     const _routes = _generateRoutes(root);
 
@@ -82,7 +82,7 @@ router.beforeEach(async (to) => {
   if (to.meta.auth) {
     const authStore = useAuthStore();
     if (!authStore.currentUser.isLoggedIn && to.path !== '/login') {
-      authStore.setRedirect(to.path);
+      authStore.setRedirect(to.path !== '/' ? to.path : null);
 
       console.log(`Requires auth ${to.path}`);
       return {

@@ -54,8 +54,8 @@
 </template>
 
 <script lang="ts" setup>
-import MainLayout from '../../components/MainLayout.vue';
-import { useAuthStore } from '../../stores/auth';
+import MainLayout from '../components/MainLayout.vue';
+import { useAuthStore } from '../stores/auth';
 
-const { currentUser, formData, register, roles } = useAuthStore();
+const { currentUser, formData, register } = useAuthStore();
 </script>

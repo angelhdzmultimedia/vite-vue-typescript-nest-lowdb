@@ -13,28 +13,29 @@
         <q-toolbar-title><q-icon name="coffee" /></q-toolbar-title>
         <div v-if="!currentUser.isLoggedIn">
           <router-link to="/login" custom v-slot="{ navigate }">
-            <q-btn @click="navigate" @keypress.enter="navigate" role="link"
+            <q-btn @click="() => navigate()" @keypress.enter="() => navigate()" role="link"
               >Login</q-btn
             >
           </router-link>
           <router-link to="/register" custom v-slot="{ navigate }">
-            <q-btn @click="navigate" @keypress.enter="navigate" role="link"
+            <q-btn @click="() => navigate()" @keypress.enter="() => navigate()" role="link"
               >Register</q-btn
             >
           </router-link>
         </div>
-        <q-btn flat :label="currentUser.firstName">
+        <q-avatar flat class="cursor-pointer"> 
+           <q-img :src="'images/default_profile.png'"/>
           <q-menu>
             <q-list>
-              <q-item clickable>
+              <q-item clickable to="/profile">
                 <q-item-section>Profile</q-item-section>
               </q-item>
-              <q-item clickable>
+              <q-item clickable @click="logout">
                 <q-item-section>Logout</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
-        </q-btn>
+        </q-avatar>
       </q-toolbar>
     </q-header>
     <q-page-container class="column window-width window-height q-pa-md">
@@ -46,5 +47,5 @@
 <script lang="ts" setup>
 import { useAuthStore } from '../stores/auth';
 
-const { currentUser } = useAuthStore();
+const { currentUser, logout } = useAuthStore();
 </script>

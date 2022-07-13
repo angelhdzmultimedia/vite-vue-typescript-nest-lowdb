@@ -3,9 +3,10 @@ import { ref } from 'vue';
 import { api } from '../../api';
 import { Notify } from 'quasar';
 import { router } from '../../router';
+import { wait } from '../../helpers';
 
 export const useAuthStore = defineStore('authStore', () => {
-  const currentUser = ref({
+  const defaultUser = {
     isLoggedIn: false,
     firstName: null,
     displayName: null,
@@ -13,9 +14,12 @@ export const useAuthStore = defineStore('authStore', () => {
     password: null,
     roles: null,
     id: null,
+  }
+  const currentUser = ref({
+    ...defaultUser
   });
 
-  const redirectUrl = ref(null);
+  const redirectUrl = ref<string | null>(null);
 
   const roles = ['USER_ROLE', 'ADMIN_ROLE', 'EDITOR_ROLE'];
 
@@ -34,16 +38,21 @@ export const useAuthStore = defineStore('authStore', () => {
     },
   });
 
-  function setRedirect(path: string) {
+  function setRedirect(path: string | null): void {
     redirectUrl.value = path;
   }
 
-  function removeRedirect() {
+  function removeRedirect(): void {
     redirectUrl.value = null;
   }
 
+  const isLoggingIn = ref(false)
+
   async function login() {
     try {
+      isLoggingIn.value = true
+      await wait(500)
+
       const { data } = await api.post('/login', {
         email: formData.value.login.email,
         password: formData.value.login.password,
@@ -53,8 +62,10 @@ export const useAuthStore = defineStore('authStore', () => {
         isLoggedIn: true,
       };
 
+      isLoggingIn.value = false
+
       Notify.create(
-        `Logged in successfully. Redirecting to ${redirectUrl.value}...`
+        `Logged in successfully. Redirecting to ${redirectUrl.value ?? 'Dashboard'}...`
       );
       await router.push('/');
     } catch (error: unknown) {
@@ -70,14 +81,24 @@ export const useAuthStore = defineStore('authStore', () => {
         email: formData.value.register.email,
         password: formData.value.register.password,
       });
-      Notify.create('Registered successfully. Redirecting...');
+      Notify.create('Registered successfully. Redirecting to Login...');
       router.push('/');
     } catch (error: unknown) {
       Notify.create(error as string);
     }
   }
 
+  async function logout() {
+    currentUser.value = {
+      ...defaultUser
+    }
+
+    await router.push('/login')
+  }
+
   return {
+    isLoggingIn,
+    logout,
     removeRedirect,
     setRedirect,
     login,

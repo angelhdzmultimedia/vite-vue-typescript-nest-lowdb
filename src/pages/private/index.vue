@@ -8,13 +8,13 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
+                  <q-img :src="'images/default_profile.png'" />
                 </q-avatar>
               </q-item-section>
 
               <q-item-section>
-                <q-item-label>Title</q-item-label>
-                <q-item-label caption>Subhead</q-item-label>
+                <q-item-label>{{currentUser.firstName}}</q-item-label>
+                <q-item-label caption>{{currentUser.displayName}}</q-item-label>
               </q-item-section>
             </q-item>
           </q-card-section>
