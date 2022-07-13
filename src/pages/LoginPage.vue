@@ -10,6 +10,7 @@
             v-model="formData.login.password"
             placeholder="Password"
           />
+          Redirect URL: {{ redirectUrl }}
           <q-btn color="primary" type="submit">Login</q-btn>
           <div class="column full-width q-mt-lg q-gutter-sm items-center">
             <span>Don't have an account?</span>
@@ -22,8 +23,8 @@
 </template>
 
 <script lang="ts" setup>
-import MainLayout from '../../components/MainLayout.vue';
-import { useAuthStore } from '../../stores/auth';
+import MainLayout from '../components/MainLayout.vue';
+import { useAuthStore } from '../stores/auth';
 
-const { currentUser, formData, login } = useAuthStore();
+const { currentUser, formData, login, redirectUrl } = useAuthStore();
 </script>

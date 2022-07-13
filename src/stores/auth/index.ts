@@ -15,22 +15,32 @@ export const useAuthStore = defineStore('authStore', () => {
     id: null,
   });
 
+  const redirectUrl = ref(null);
+
   const roles = ['USER_ROLE', 'ADMIN_ROLE', 'EDITOR_ROLE'];
 
   const formData = ref({
     register: {
       firstName: 'Angel',
-      displayName: 'angelhdzmultimedia',
-      email: 'angelhdzmultimedia@gmail.com',
+      displayName: 'angelhdz',
+      email: 'angelhdz@gmail.com',
       password: '123456',
       isPasswordHidden: true,
     },
     login: {
-      email: 'angelhdzmultimedia@gmail.com',
+      email: 'angelhdz@gmail.com',
       password: '123456',
       isPasswordHidden: true,
     },
   });
+
+  function setRedirect(path: string) {
+    redirectUrl.value = path;
+  }
+
+  function removeRedirect() {
+    redirectUrl.value = null;
+  }
 
   async function login() {
     try {
@@ -42,8 +52,11 @@ export const useAuthStore = defineStore('authStore', () => {
         ...data,
         isLoggedIn: true,
       };
-      Notify.create('Logged in successfully. Redirecting...');
-      router.push('/');
+
+      Notify.create(
+        `Logged in successfully. Redirecting to ${redirectUrl.value}...`
+      );
+      await router.push('/');
     } catch (error: unknown) {
       Notify.create(error as string);
     }
@@ -65,9 +78,12 @@ export const useAuthStore = defineStore('authStore', () => {
   }
 
   return {
+    removeRedirect,
+    setRedirect,
     login,
     register,
     formData,
     currentUser,
+    redirectUrl,
   };
 });

@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 
-function generateRoutes(pages, access) {
+function _generateRoutes(root: RouteRootRecord): RouteRecordRaw[] {
   let routes = [];
-  for (const page in pages) {
+  for (const page in root.path) {
     const parts = /^(.*[\\/])?(.*?)(\.[^.]*?|)$/gi.exec(page);
     const data = {
       path: parts[0] || '',
@@ -22,35 +22,81 @@ function generateRoutes(pages, access) {
 
     routes.push({
       path: pathName,
-      component: pages[page],
-      meta: {
-        auth: access === 'private',
-      },
+      component: root.path[page],
+      props: root.props,
+      meta: root.meta,
     });
   }
 
   return routes;
 }
 
+type RouteRootRecord = {
+  name: string;
+  meta?: any;
+  path: any;
+  props?: boolean;
+};
+
+function generateRoutes(roots: RouteRootRecord[]): RouteRecordRaw[] {
+  let routes = [];
+  for (const root of roots) {
+    const _routes = _generateRoutes(root);
+
+    routes = routes.concat(_routes);
+  }
+  return routes;
+}
+
 export const router = createRouter({
   history: createWebHistory(),
-  routes: generateRoutes(
-    import.meta.glob('../pages/public/*.vue'),
-    'public'
-  ).concat(
-    generateRoutes(import.meta.glob('../pages/private/*.vue'), 'private')
-  ),
+  routes: generateRoutes([
+    {
+      path: import.meta.glob('../pages/private/*.vue'),
+      name: 'private',
+      props: true,
+      meta: {
+        auth: true,
+      },
+    },
+    {
+      path: import.meta.glob('../pages/test/*.vue'),
+      name: 'test',
+      props: true,
+      meta: {
+        auth: true,
+      },
+    },
+    {
+      path: import.meta.glob('../pages/*.vue'),
+      name: '',
+      props: true,
+      meta: {
+        auth: false,
+      },
+    },
+  ]),
 });
 
 router.beforeEach(async (to) => {
   if (to.meta.auth) {
     const authStore = useAuthStore();
     if (!authStore.currentUser.isLoggedIn && to.path !== '/login') {
-      return '/login';
-    } else {
-      return true;
+      authStore.setRedirect(to.path);
+
+      console.log(`Requires auth ${to.path}`);
+      return {
+        path: '/login',
+      };
     }
-  } else {
-    return true;
+    if (authStore.redirectUrl) {
+      const path = authStore.redirectUrl;
+      authStore.removeRedirect();
+      return {
+        path,
+      };
+    }
   }
+  console.log(`NOT requires auth. ${to.path}`);
+  return true;
 });
