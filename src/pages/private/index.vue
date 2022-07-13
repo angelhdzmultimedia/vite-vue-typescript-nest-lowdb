@@ -8,7 +8,9 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
+                  <q-img
+                    :src="currentUser.imageUrl ?? 'images/default_profile.png'"
+                  />
                 </q-avatar>
               </q-item-section>
 
