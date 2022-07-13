@@ -82,7 +82,7 @@ router.beforeEach(async (to) => {
   if (to.meta.auth) {
     const authStore = useAuthStore();
     if (!authStore.currentUser.isLoggedIn && to.path !== '/login') {
-      authStore.setRedirect(to.path);
+      authStore.setRedirect(to.path !== '/' ? to.path : null);
 
       console.log(`Requires auth ${to.path}`);
       return {

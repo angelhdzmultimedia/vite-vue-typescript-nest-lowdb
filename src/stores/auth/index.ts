@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { api } from '../../api';
 import { Notify } from 'quasar';
 import { router } from '../../router';
+import { wait } from '../../helpers';
 
 export const useAuthStore = defineStore('authStore', () => {
   const currentUser = ref({
@@ -34,6 +35,8 @@ export const useAuthStore = defineStore('authStore', () => {
     },
   });
 
+  const isLoggingIn = ref<boolean>(false);
+
   function setRedirect(path: string) {
     redirectUrl.value = path;
   }
@@ -44,6 +47,8 @@ export const useAuthStore = defineStore('authStore', () => {
 
   async function login() {
     try {
+      isLoggingIn.value = true;
+      await wait(500);
       const { data } = await api.post('/login', {
         email: formData.value.login.email,
         password: formData.value.login.password,
@@ -52,6 +57,8 @@ export const useAuthStore = defineStore('authStore', () => {
         ...data,
         isLoggedIn: true,
       };
+
+      isLoggingIn.value = false;
 
       Notify.create(
         `Logged in successfully. Redirecting to ${redirectUrl.value}...`
@@ -78,6 +85,7 @@ export const useAuthStore = defineStore('authStore', () => {
   }
 
   return {
+    isLoggingIn,
     removeRedirect,
     setRedirect,
     login,
